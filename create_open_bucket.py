@@ -41,18 +41,20 @@ def main():
     
     bucket_name = sys.argv[1]
     connection = S3Connection()
+    
     bucket = connection.create_bucket(bucket_name)
-    bucket.configure_website("index.html")
     bucket.set_policy(POLICY_TEMPLATE % (bucket_name))
     
+    bucket.configure_website("index.html")
     index = bucket.new_key("index.html")
     index.metadata.update({"Content-Type" : "text/html"})
     index.set_contents_from_string('''
-               <html><head><title>
-               Hello s3</title></head>
-               <body><p>Hello S3!</p></body>
+               <html>
+                   <head><title>Hello s3</title></head>
+                   <body><p>Hello S3!</p></body>
                </html>''')
-    print "To finish the setup, creat CNAME entry for %s pointing to %s " % (
+
+    print "To finish the setup, create a CNAME entry for %s pointing to %s " % (
                bucket_name,
                    bucket.get_website_endpoint())
 
