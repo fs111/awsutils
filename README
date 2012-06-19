@@ -1,0 +1,4 @@
+Utility scripts to work with amazon webservices.
+------------------------------------------------
+
+create_open_bucket.py - creates an open S3 bucket for hosting a (static) website
