@@ -45,14 +45,16 @@ def main():
     bucket = connection.create_bucket(bucket_name)
     bucket.set_policy(POLICY_TEMPLATE % (bucket_name))
     
-    bucket.configure_website("index.html")
-    index = bucket.new_key("index.html")
-    index.metadata.update({"Content-Type" : "text/html"})
-    index.set_contents_from_string('''
+    bucket.configure_website("index.html", error_key="404.html")
+
+    for key, content in ("index.html", "Hello S3"), ("404.html", "Not found"):
+        newKey = bucket.new_key(key)
+        newKey.metadata.update({"Content-Type" : "text/html"})
+        newKey.set_contents_from_string('''
                <html>
-                   <head><title>Hello s3</title></head>
-                   <body><p>Hello S3!</p></body>
-               </html>''')
+                   <head><title>%s</title></head>
+                   <body><p>%s</p></body>
+               </html>''' % (content, content))
 
     print "To finish the setup, create a CNAME entry for %s pointing to %s " % (
                bucket_name,
