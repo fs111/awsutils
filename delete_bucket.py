@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+ # -*- coding: utf-8 -*-
 """
 script to delete an entire S3 bucket including all it's content. The data is
 deleted forever and cannot be restored. Be careful with this script!
